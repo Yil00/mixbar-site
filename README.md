@@ -16,6 +16,12 @@ scripts/package-extensions.sh   # régénère site/downloads/*.zip et version.js
 
 puis recopier `site/` ici et pousser.
 
+## Page « Nouveautés »
+
+`releases.html` affiche `releases.json` (français + anglais). À chaque version de l'app ou de
+l'extension, ajouter une entrée **en haut** de la liste (`kind` : `security`, `fixed`, `new`, `improved`)
+avant de lancer `scripts/publish-release.sh` ou `scripts/publish-site.sh`.
+
 ## Personnaliser
 
 Tout le texte vit dans `app.js` : `SUPPORT_URL`, `CONTACT_EMAIL`, et les dictionnaires `fr` / `en`.
@@ -26,3 +32,4 @@ Les pages HTML ne sont que des gabarits.
 - Extension : `https://yil00.github.io/mixbar-site/extension.html`
 - Confidentialité (boutiques d'extensions, App Store) : `https://yil00.github.io/mixbar-site/privacy.html`
 - Assistance : `https://yil00.github.io/mixbar-site/support.html`
+- Nouveautés : `https://yil00.github.io/mixbar-site/releases.html`

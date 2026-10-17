@@ -121,6 +121,25 @@ details { background: var(--card); border: 1px solid var(--line); border-radius:
 details summary { cursor: pointer; font-weight: 600; }
 details p { color: var(--subtle); margin: 8px 0 2px; }
 
+/* Nouveautés */
+.release-list { display: grid; gap: 18px; max-width: 760px; margin: 0 auto; }
+.release header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 10px; }
+.release header h2 { margin: 0; }
+.release time { color: var(--subtle); font-size: 15px; }
+.release header a { margin-left: auto; font-size: 15px; font-weight: 600; }
+.release ul { list-style: none; padding: 0; margin: 0; }
+.release li { display: flex; gap: 10px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); color: var(--subtle); }
+.release li:first-child { border-top: 0; }
+.tag { flex: none; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px; color: #fff; background: var(--subtle); }
+.tag.security { background: var(--coral); }
+.tag.new { background: var(--green); }
+.tag.fixed { background: #3b7dd8; }
+.tag.improved { background: #8a5cc7; }
+:root[data-theme="dark"] .tag { color: #1d141b; }
+:root[data-theme="dark"] .tag.fixed { background: #8ab8ff; }
+:root[data-theme="dark"] .tag.improved { background: #c9a6f5; }
+
 .legal h2 { font-size: 20px; margin: 26px 0 6px; }
 .legal p { color: var(--subtle); }
 
@@ -131,4 +150,6 @@ details p { color: var(--subtle); margin: 8px 0 2px; }
   .site-header { padding: 14px 16px; }
   .site-nav { margin-left: 0; width: 100%; }
   .page { padding: 0 16px 40px; }
+  .release li { flex-direction: column; gap: 4px; }
+  .release header a { margin-left: 0; }
 }

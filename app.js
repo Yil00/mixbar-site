@@ -14,6 +14,7 @@ const I18N = {
     "nav.home": "Accueil",
     "nav.extension": "Extension navigateur",
     "nav.privacy": "Confidentialité",
+    "nav.releases": "Nouveautés",
     "nav.support": "Assistance",
     "theme.toggle": "Changer de thème",
     "footer.note": "MixBar — le son ne quitte jamais votre Mac.",
@@ -94,6 +95,18 @@ const I18N = {
     "home.download.soon": "Bientôt disponible",
     "home.download.meta": "Version {version} · macOS 15 ou ultérieur",
 
+    "releases.title": "Nouveautés",
+    "releases.lead": "Ce qui change à chaque version de MixBar et de son extension navigateur : nouveautés, améliorations, corrections.",
+    "releases.app": "MixBar",
+    "releases.extension": "Extension navigateur",
+    "releases.download": "Télécharger",
+    "releases.install": "Installer",
+    "releases.empty": "Impossible de charger la liste des versions.",
+    "kind.security": "Sécurité",
+    "kind.fixed": "Corrigé",
+    "kind.new": "Nouveau",
+    "kind.improved": "Amélioré",
+
     "support.title": "Assistance",
     "support.lead": "Une question, un bug, une idée ? Écrivez-nous — chaque retour est lu.",
     "support.cta": "Signaler un problème",
@@ -113,6 +126,7 @@ const I18N = {
     "nav.home": "Home",
     "nav.extension": "Browser extension",
     "nav.privacy": "Privacy",
+    "nav.releases": "What's new",
     "nav.support": "Support",
     "theme.toggle": "Toggle theme",
     "footer.note": "MixBar — your audio never leaves your Mac.",
@@ -193,6 +207,18 @@ const I18N = {
     "home.download.soon": "Coming soon",
     "home.download.meta": "Version {version} · macOS 15 or later",
 
+    "releases.title": "What's new",
+    "releases.lead": "What changes in each version of MixBar and its browser extension: new features, improvements, fixes.",
+    "releases.app": "MixBar",
+    "releases.extension": "Browser extension",
+    "releases.download": "Download",
+    "releases.install": "Install",
+    "releases.empty": "The version list could not be loaded.",
+    "kind.security": "Security",
+    "kind.fixed": "Fixed",
+    "kind.new": "New",
+    "kind.improved": "Improved",
+
     "support.title": "Support",
     "support.lead": "A question, a bug, an idea? Write to us — every message is read.",
     "support.cta": "Report an issue",
@@ -231,6 +257,7 @@ function renderHeader(lang) {
     <nav class="site-nav" aria-label="Navigation">
       ${link("index.html", "nav.home", "home")}
       ${link("extension.html", "nav.extension", "extension")}
+      ${link("releases.html", "nav.releases", "releases")}
       ${link("privacy.html", "nav.privacy", "privacy")}
       ${link("support.html", "nav.support", "support")}
     </nav>
@@ -246,6 +273,8 @@ function renderHeader(lang) {
     try { localStorage.setItem("mixbar-lang", select.value); } catch {}
     apply(select.value);
     loadAppRelease();
+loadReleases();
+    loadReleases();
   });
   document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 }
@@ -330,8 +359,55 @@ function loadVersion() {
     .catch(() => {});
 }
 
+// Page Nouveautés : journal des versions (releases.json), rendu dans la langue choisie.
+let releasesData = null;
+function loadReleases() {
+  const list = document.getElementById("releaseList");
+  if (!list) return;
+  const render = (data) => {
+    const lang = document.documentElement.lang in I18N ? document.documentElement.lang : "fr";
+    const t = I18N[lang];
+    const date = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US",
+      { day: "numeric", month: "long", year: "numeric" });
+    list.replaceChildren(...data.releases.map((release) => {
+      const card = document.createElement("article");
+      card.className = "card release";
+      const head = document.createElement("header");
+      const title = document.createElement("h2");
+      title.textContent = `${t[`releases.${release.product}`] ?? release.product} ${release.version}`;
+      const time = document.createElement("time");
+      time.dateTime = release.date;
+      time.textContent = date(release.date);
+      head.append(title, time);
+      if (release.url) {
+        const link = document.createElement("a");
+        link.href = release.url;
+        link.textContent = t[release.product === "app" ? "releases.download" : "releases.install"];
+        head.append(link);
+      }
+      const changes = document.createElement("ul");
+      for (const change of release.changes) {
+        const item = document.createElement("li");
+        const tag = document.createElement("span");
+        tag.className = `tag ${change.kind}`;
+        tag.textContent = t[`kind.${change.kind}`] ?? change.kind;
+        item.append(tag, document.createTextNode(change[lang] ?? change.fr));
+        changes.append(item);
+      }
+      card.append(head, changes);
+      return card;
+    }));
+  };
+  if (releasesData) return render(releasesData);
+  fetch("releases.json", { cache: "no-store" })
+    .then((response) => response.json())
+    .then((data) => { releasesData = data; render(data); })
+    .catch(() => { list.textContent = I18N[document.documentElement.lang]?.["releases.empty"] ?? ""; });
+}
+
 initTheme();
 apply(language());
 initTabs();
 loadVersion();
 loadAppRelease();
+loadReleases();
