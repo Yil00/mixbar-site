@@ -31,7 +31,7 @@ const I18N = {
     "home.f3.body": "Envoyez une app vers le casque et le reste vers les enceintes. Casque débranché : les haut-parleurs restent muets.",
     "home.f4.title": "Privé par conception",
     "home.f4.body": "Sans driver, sans compte, sans mesure d'audience. Seuls vos réglages se synchronisent, via votre iCloud privé.",
-    "home.availability": "MixBar pour macOS 15 et ultérieur est en préparation. L'extension navigateur ne fonctionne qu'avec l'app MixBar installée et ouverte.",
+    "home.availability": "MixBar fonctionne sur macOS 15 et ultérieur, gratuitement, notarisé par Apple. L'extension navigateur ne fonctionne qu'avec l'app MixBar installée et ouverte.",
 
     "ext.title": "Extension navigateur",
     "ext.lead": "L'extension affiche dans MixBar chaque onglet qui joue du son, avec son volume, son muet et un bouton lecture / pause.",
@@ -130,7 +130,7 @@ const I18N = {
     "home.f3.body": "Send one app to your headset and the rest to your speakers. Headset unplugged: the speakers stay silent.",
     "home.f4.title": "Private by design",
     "home.f4.body": "No driver, no account, no analytics. Only your settings sync, through your private iCloud.",
-    "home.availability": "MixBar for macOS 15 and later is coming soon. The browser extension only works with the MixBar app installed and running.",
+    "home.availability": "MixBar runs on macOS 15 and later, free and notarized by Apple. The browser extension only works with the MixBar app installed and running.",
 
     "ext.title": "Browser extension",
     "ext.lead": "The extension shows every tab playing sound in MixBar, with its own volume, mute and play / pause button.",
