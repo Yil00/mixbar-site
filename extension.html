@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Télécharger et installer l'extension MixBar pour Chrome et Firefox : volume, muet et lecture / pause de chaque onglet.">
+    <meta name="theme-color" content="#30202A">
+    <link rel="icon" href="icon.png">
+    <title>Extension navigateur — MixBar</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body data-page="extension" data-title-key="ext.title">
+    <header class="site-header" id="site-header"></header>
+    <main class="page">
+      <section class="page-hero">
+        <h1 data-i18n="ext.title">Extension navigateur</h1>
+        <p class="lead" data-i18n="ext.lead"></p>
+      </section>
+      <span class="stripe"></span>
+
+      <section class="card warning"><p data-i18n-html="ext.requires"></p></section>
+
+      <div class="grid section">
+        <section class="card">
+          <h2>Chrome</h2>
+          <p class="note"><span data-i18n="ext.version">Version proposée :</span> <span id="extensionVersion">—</span></p>
+          <div class="download"><a class="btn" href="downloads/mixbar-extension-chrome.zip" download data-i18n="ext.dl.chrome">Télécharger pour Chrome</a></div>
+        </section>
+        <section class="card">
+          <h2>Firefox</h2>
+          <p class="note">Firefox 115+</p>
+          <div class="download"><a class="btn" href="downloads/mixbar-extension-firefox.zip" download data-i18n="ext.dl.firefox">Télécharger pour Firefox</a></div>
+        </section>
+        <section class="card">
+          <h2 data-i18n="ext.dl.safari">Safari</h2>
+          <p data-i18n="ext.safari.body"></p>
+        </section>
+      </div>
+      <p class="note" data-i18n="ext.temporary"></p>
+
+      <section class="section">
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-panel="panel-chrome" data-i18n="ext.tab.chrome">Chrome</button>
+          <button type="button" role="tab" aria-selected="false" data-panel="panel-firefox" data-i18n="ext.tab.firefox">Firefox</button>
+        </div>
+
+        <div class="card" id="panel-chrome" role="tabpanel">
+          <h2 data-i18n="chrome.title"></h2>
+          <ol class="steps">
+            <li data-i18n-html="chrome.s1"></li>
+            <li data-i18n-html="chrome.s2"></li>
+            <li data-i18n-html="chrome.s3"></li>
+            <li data-i18n-html="chrome.s4"></li>
+            <li data-i18n-html="chrome.s5"></li>
+            <li data-i18n-html="chrome.s6"></li>
+          </ol>
+          <p class="note" data-i18n-html="chrome.update"></p>
+          <p class="note" data-i18n-html="chrome.alt"></p>
+        </div>
+
+        <div class="card" id="panel-firefox" role="tabpanel" hidden>
+          <h2 data-i18n="firefox.title"></h2>
+          <ol class="steps">
+            <li data-i18n-html="firefox.s1"></li>
+            <li data-i18n-html="firefox.s2"></li>
+            <li data-i18n-html="firefox.s3"></li>
+            <li data-i18n-html="firefox.s4"></li>
+            <li data-i18n-html="firefox.s5"></li>
+            <li data-i18n-html="firefox.s6"></li>
+          </ol>
+          <p class="note" data-i18n-html="firefox.limit"></p>
+        </div>
+      </section>
+
+      <section class="section" id="aide">
+        <h2 data-i18n="help.title">En cas de souci</h2>
+        <details><summary data-i18n="help.q1"></summary><p data-i18n-html="help.a1"></p></details>
+        <details><summary data-i18n="help.q2"></summary><p data-i18n-html="help.a2"></p></details>
+        <details><summary data-i18n="help.q3"></summary><p data-i18n-html="help.a3"></p></details>
+        <details><summary data-i18n="help.q4"></summary><p data-i18n-html="help.a4"></p></details>
+      </section>
+    </main>
+    <footer class="site-footer" id="site-footer"></footer>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MixBar : mixeur de volume par app et par onglet, discret dans la barre de menus du Mac.">
+    <meta name="theme-color" content="#30202A">
+    <link rel="icon" href="icon.png">
+    <title>MixBar</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body data-page="home" data-title-key="home.title">
+    <header class="site-header" id="site-header"></header>
+    <main class="page">
+      <section class="page-hero">
+        <img class="hero-logo" src="icon.png" alt="MixBar">
+        <p class="eyebrow" data-i18n="brand.tagline">Mixeur de volume par app</p>
+        <h1 data-i18n="home.title">MixBar</h1>
+        <p class="lead" data-i18n="home.subtitle"></p>
+        <div class="hero-actions">
+          <a class="btn" href="extension.html" data-i18n="home.cta.extension">Installer l'extension navigateur</a>
+          <a class="btn secondary" href="privacy.html" data-i18n="home.cta.privacy">Confidentialité</a>
+        </div>
+        <div class="card mock" aria-hidden="true">
+          <div class="mock-row"><span class="mock-icon" style="background:#1db954">♫</span><div>Spotify<div class="mock-bar"><span style="width:55%"></span></div></div><span class="mock-pct">55 %</span></div>
+          <div class="mock-row"><span class="mock-icon" style="background:#5865f2">D</span><div>Discord<div class="mock-bar"><span style="width:30%"></span></div></div><span class="mock-pct">30 %</span></div>
+          <div class="mock-row"><span class="mock-icon" style="background:#1a73e8">◎</span><div>Safari<div class="mock-bar"><span style="width:100%"></span></div></div><span class="mock-pct">100 %</span></div>
+          <div class="mock-row tab"><span>▭</span><div>Tutoriel Swift — YouTube<div class="mock-bar"><span style="width:80%"></span></div></div><span class="mock-pct">80 %</span></div>
+          <div class="mock-row tab"><span>▭</span><div>Podcast du matin<div class="mock-bar"><span style="width:35%"></span></div></div><span class="mock-pct">35 %</span></div>
+        </div>
+      </section>
+      <span class="stripe"></span>
+      <div class="grid">
+        <section class="card"><h2 data-i18n="home.f1.title"></h2><p data-i18n="home.f1.body"></p></section>
+        <section class="card"><h2 data-i18n="home.f2.title"></h2><p data-i18n="home.f2.body"></p></section>
+        <section class="card"><h2 data-i18n="home.f3.title"></h2><p data-i18n="home.f3.body"></p></section>
+        <section class="card"><h2 data-i18n="home.f4.title"></h2><p data-i18n="home.f4.body"></p></section>
+      </div>
+      <p class="note" style="text-align:center;margin-top:28px" data-i18n="home.availability"></p>
+    </main>
+    <footer class="site-footer" id="site-footer"></footer>
+    <script src="app.js"></script>
+  </body>
+</html>
