@@ -7,6 +7,7 @@ const SUPPORT_URL = "https://github.com/Yil00/mixbar-site/issues";
 const CONTACT_EMAIL = "";
 const UPDATED = "2026-10-17";
 
+
 const I18N = {
   fr: {
     "brand.tagline": "Mixeur de volume par app",
@@ -87,6 +88,11 @@ const I18N = {
     "privacy.s5.body": "Enregistrement audio du système (régler le son des apps), Automatisation (lecture / pause de Spotify, Musique, VLC, seulement quand vous cliquez). Extension : onglets, accès aux sites (lecteurs des pages), messagerie native (parler à MixBar).",
     "privacy.s6.title": "Contact",
     "privacy.s6.body": "Pour toute question, ouvrez une demande depuis la page Assistance.",
+    "privacy.s7.title": "Mises à jour",
+    "privacy.s7.body": "Une fois par jour, MixBar lit un petit fichier public sur ce site pour savoir si une nouvelle version existe. Rien n'est envoyé : ni identifiant, ni réglage, ni information sur votre Mac. La vérification se désactive dans MixBar › Réglages › À propos.",
+    "home.cta.download": "Télécharger MixBar",
+    "home.download.soon": "Bientôt disponible",
+    "home.download.meta": "Version {version} · macOS 15 ou ultérieur",
 
     "support.title": "Assistance",
     "support.lead": "Une question, un bug, une idée ? Écrivez-nous — chaque retour est lu.",
@@ -181,6 +187,11 @@ const I18N = {
     "privacy.s5.body": "System Audio Recording (to control app audio), Automation (play / pause for Spotify, Music, VLC, only when you click). Extension: tabs, site access (page players), native messaging (to talk to MixBar).",
     "privacy.s6.title": "Contact",
     "privacy.s6.body": "For any question, open a request from the Support page.",
+    "privacy.s7.title": "Updates",
+    "privacy.s7.body": "Once a day, MixBar reads a small public file on this website to know whether a new version exists. Nothing is sent: no identifier, no setting, no information about your Mac. The check can be turned off in MixBar › Settings › About.",
+    "home.cta.download": "Download MixBar",
+    "home.download.soon": "Coming soon",
+    "home.download.meta": "Version {version} · macOS 15 or later",
 
     "support.title": "Support",
     "support.lead": "A question, a bug, an idea? Write to us — every message is read.",
@@ -234,6 +245,7 @@ function renderHeader(lang) {
   select.addEventListener("change", () => {
     try { localStorage.setItem("mixbar-lang", select.value); } catch {}
     apply(select.value);
+    loadAppRelease();
   });
   document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 }
@@ -287,6 +299,27 @@ function initTabs() {
   if (location.hash === "#firefox") document.querySelector('[data-panel="panel-firefox"]')?.click();
 }
 
+// Bouton « Télécharger MixBar » : n'apparaît qu'une fois une version notarisée publiée
+// (downloads/app.json, écrit par scripts/release.sh et publié par scripts/publish-release.sh).
+function loadAppRelease() {
+  const button = document.getElementById("appDownload");
+  if (!button) return;
+  const t = I18N[document.documentElement.lang] ?? I18N.fr;
+  button.textContent = t["home.download.soon"];
+  button.classList.add("secondary");
+  fetch("downloads/app.json", { cache: "no-store" })
+    .then((response) => (response.ok ? response.json() : null))
+    .then((release) => {
+      if (!release?.notarized) return;
+      button.textContent = t["home.cta.download"];
+      button.href = release.url;
+      button.classList.remove("secondary");
+      const meta = document.getElementById("appDownloadMeta");
+      if (meta) meta.textContent = t["home.download.meta"].replace("{version}", release.version);
+    })
+    .catch(() => {});
+}
+
 // Version de l'extension, écrite par scripts/package-extensions.sh.
 function loadVersion() {
   const target = document.getElementById("extensionVersion");
@@ -301,3 +334,4 @@ initTheme();
 apply(language());
 initTabs();
 loadVersion();
+loadAppRelease();
