@@ -1,9 +1,9 @@
 {
-  "version": "1.0.0",
-  "build": "202610171950",
+  "version": "1.0.1",
+  "build": "202610172034",
   "date": "2026-10-17",
-  "url": "https://github.com/Yil00/mixbar-site/releases/download/v1.0.0/MixBar-1.0.0.dmg",
-  "notes": "Première version publique de MixBar.",
+  "url": "https://github.com/Yil00/mixbar-site/releases/download/v1.0.1/MixBar-1.0.1.dmg",
+  "notes": "Sécurité : le lien de mise à jour n'est accepté que depuis le site officiel ; une remise à zéro demandée par un lien web demande désormais confirmation.",
   "minimumSystemVersion": "15.0",
   "notarized": true
 }
