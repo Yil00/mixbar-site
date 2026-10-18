@@ -5,7 +5,7 @@
 const SUPPORT_URL = "https://github.com/Yil00/mixbar-site/issues";
 // E-mail de contact. Vide : le bouton « Nous écrire » disparaît.
 const CONTACT_EMAIL = "";
-const UPDATED = "2026-10-17";
+const UPDATED = "2026-10-18";
 
 
 const I18N = {
@@ -18,7 +18,7 @@ const I18N = {
     "nav.support": "Assistance",
     "theme.toggle": "Changer de thème",
     "footer.note": "MixBar — le son ne quitte jamais votre Mac.",
-    "updated": "Dernière mise à jour : 17 octobre 2026",
+    "updated": "Dernière mise à jour : 18 octobre 2026",
 
     "home.title": "MixBar",
     "home.subtitle": "Le mélangeur de volume que macOS n'a jamais eu : réglez chaque app — et chaque onglet de votre navigateur — depuis la barre de menus.",
@@ -78,7 +78,7 @@ const I18N = {
     "privacy.title": "Politique de confidentialité",
     "privacy.lead": "MixBar et son extension ne collectent aucune donnée personnelle.",
     "privacy.s1.title": "Aucune collecte",
-    "privacy.s1.body": "Ni compte, ni publicité, ni mesure d'audience, ni composant tiers. L'éditeur ne reçoit aucune information sur vous ni sur votre usage.",
+    "privacy.s1.body": "Ni compte, ni publicité, ni mesure d'audience, ni composant tiers. L'éditeur ne reçoit aucune information sur vous ni sur votre usage : il ne voit que les compteurs globaux et anonymes de GitHub (nombre de téléchargements, nombre de vérifications de mise à jour).",
     "privacy.s2.title": "Le son reste sur votre Mac",
     "privacy.s2.body": "Pour régler le volume de chaque app, MixBar intercepte le son localement grâce aux fonctions audio de macOS (autorisation « Enregistrement audio du système »). Le son n'est jamais enregistré, stocké ni transmis.",
     "privacy.s3.title": "L'extension navigateur",
@@ -90,7 +90,7 @@ const I18N = {
     "privacy.s6.title": "Contact",
     "privacy.s6.body": "Pour toute question, ouvrez une demande depuis la page Assistance.",
     "privacy.s7.title": "Mises à jour",
-    "privacy.s7.body": "Une fois par jour, MixBar lit un petit fichier public sur ce site pour savoir si une nouvelle version existe. Rien n'est envoyé : ni identifiant, ni réglage, ni information sur votre Mac. La vérification se désactive dans MixBar › Réglages › À propos.",
+    "privacy.s7.body": "Une fois par jour, MixBar lit un petit fichier public, hébergé sur GitHub avec ce site, pour savoir si une nouvelle version existe. Rien n'est envoyé : ni identifiant, ni réglage, ni information sur votre Mac. GitHub compte le nombre total de lectures de ce fichier, comme pour tout téléchargement : l'éditeur n'en voit que le total, qui lui donne une idée du nombre de Mac équipés. La vérification se désactive dans MixBar › Réglages › À propos.",
     "home.cta.download": "Télécharger MixBar",
     "home.download.soon": "Bientôt disponible",
     "home.download.meta": "Version {version} · macOS 15 ou ultérieur",
@@ -130,7 +130,7 @@ const I18N = {
     "nav.support": "Support",
     "theme.toggle": "Toggle theme",
     "footer.note": "MixBar — your audio never leaves your Mac.",
-    "updated": "Last updated: October 17, 2026",
+    "updated": "Last updated: October 18, 2026",
 
     "home.title": "MixBar",
     "home.subtitle": "The volume mixer macOS never had: set every app — and every browser tab — right from the menu bar.",
@@ -190,7 +190,7 @@ const I18N = {
     "privacy.title": "Privacy Policy",
     "privacy.lead": "MixBar and its extension collect no personal data.",
     "privacy.s1.title": "No collection",
-    "privacy.s1.body": "No account, no ads, no analytics, no third-party components. The publisher receives no information about you or how you use the app.",
+    "privacy.s1.body": "No account, no ads, no analytics, no third-party components. The publisher receives no information about you or how you use the app: only GitHub's global, anonymous counters (number of downloads, number of update checks).",
     "privacy.s2.title": "Audio stays on your Mac",
     "privacy.s2.body": "To set each app's volume, MixBar intercepts audio locally using macOS audio features (“System Audio Recording” permission). Audio is never recorded, stored or transmitted.",
     "privacy.s3.title": "The browser extension",
@@ -202,7 +202,7 @@ const I18N = {
     "privacy.s6.title": "Contact",
     "privacy.s6.body": "For any question, open a request from the Support page.",
     "privacy.s7.title": "Updates",
-    "privacy.s7.body": "Once a day, MixBar reads a small public file on this website to know whether a new version exists. Nothing is sent: no identifier, no setting, no information about your Mac. The check can be turned off in MixBar › Settings › About.",
+    "privacy.s7.body": "Once a day, MixBar reads a small public file, hosted on GitHub alongside this website, to know whether a new version exists. Nothing is sent: no identifier, no setting, no information about your Mac. GitHub counts the total number of times this file is read, as it does for any download: the publisher only sees that total, which gives a rough idea of how many Macs use MixBar. The check can be turned off in MixBar › Settings › About.",
     "home.cta.download": "Download MixBar",
     "home.download.soon": "Coming soon",
     "home.download.meta": "Version {version} · macOS 15 or later",
@@ -349,13 +349,21 @@ function loadAppRelease() {
     .catch(() => {});
 }
 
-// Version de l'extension, écrite par scripts/package-extensions.sh.
+// Version de l'extension, écrite par scripts/package-extensions.sh. Les boutons pointent vers la
+// version GitHub (compteur de téléchargements) ; à défaut, ils gardent la copie du site.
 function loadVersion() {
   const target = document.getElementById("extensionVersion");
   if (!target) return;
   fetch("downloads/version.json", { cache: "no-store" })
     .then((response) => response.json())
-    .then((info) => (target.textContent = `${info.version} (${info.date})`))
+    .then((info) => {
+      target.textContent = `${info.version} (${info.date})`;
+      const github = /^https:\/\/github\.com\/Yil00\/mixbar-site\/releases\/download\//;
+      for (const [id, url] of [["downloadChrome", info.chrome], ["downloadFirefox", info.firefox]]) {
+        const button = document.getElementById(id);
+        if (button && github.test(url ?? "")) button.href = url;
+      }
+    })
     .catch(() => {});
 }
 
