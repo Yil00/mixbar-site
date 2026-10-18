@@ -78,7 +78,7 @@ const I18N = {
     "privacy.title": "Politique de confidentialité",
     "privacy.lead": "MixBar et son extension ne collectent aucune donnée personnelle.",
     "privacy.s1.title": "Aucune collecte",
-    "privacy.s1.body": "Ni compte, ni publicité, ni mesure d'audience, ni composant tiers. L'éditeur ne reçoit aucune information sur vous ni sur votre usage : il ne voit que les compteurs globaux et anonymes de GitHub (nombre de téléchargements, nombre de vérifications de mise à jour).",
+    "privacy.s1.body": "Ni compte, ni publicité, ni mesure d'audience, ni composant tiers. L'éditeur ne reçoit aucune information sur vous ni sur votre usage : il ne voit que les compteurs globaux et anonymes de GitHub (nombre de téléchargements, nombre de vérifications de mise à jour). Le site, hébergé par GitHub, affiche le nombre de téléchargements en interrogeant l'API publique de GitHub depuis votre navigateur ; aucun cookie, aucun traceur.",
     "privacy.s2.title": "Le son reste sur votre Mac",
     "privacy.s2.body": "Pour régler le volume de chaque app, MixBar intercepte le son localement grâce aux fonctions audio de macOS (autorisation « Enregistrement audio du système »). Le son n'est jamais enregistré, stocké ni transmis.",
     "privacy.s3.title": "L'extension navigateur",
@@ -94,6 +94,8 @@ const I18N = {
     "home.cta.download": "Télécharger MixBar",
     "home.download.soon": "Bientôt disponible",
     "home.download.meta": "Version {version} · macOS 15 ou ultérieur",
+    "count.downloads": "{n} téléchargements",
+    "count.download": "1 téléchargement",
 
     "releases.title": "Nouveautés",
     "releases.lead": "Ce qui change à chaque version de MixBar et de son extension navigateur : nouveautés, améliorations, corrections.",
@@ -190,7 +192,7 @@ const I18N = {
     "privacy.title": "Privacy Policy",
     "privacy.lead": "MixBar and its extension collect no personal data.",
     "privacy.s1.title": "No collection",
-    "privacy.s1.body": "No account, no ads, no analytics, no third-party components. The publisher receives no information about you or how you use the app: only GitHub's global, anonymous counters (number of downloads, number of update checks).",
+    "privacy.s1.body": "No account, no ads, no analytics, no third-party components. The publisher receives no information about you or how you use the app: only GitHub's global, anonymous counters (number of downloads, number of update checks). This website, hosted by GitHub, shows the download count by querying GitHub's public API from your browser; no cookies, no trackers.",
     "privacy.s2.title": "Audio stays on your Mac",
     "privacy.s2.body": "To set each app's volume, MixBar intercepts audio locally using macOS audio features (“System Audio Recording” permission). Audio is never recorded, stored or transmitted.",
     "privacy.s3.title": "The browser extension",
@@ -206,6 +208,8 @@ const I18N = {
     "home.cta.download": "Download MixBar",
     "home.download.soon": "Coming soon",
     "home.download.meta": "Version {version} · macOS 15 or later",
+    "count.downloads": "{n} downloads",
+    "count.download": "1 download",
 
     "releases.title": "What's new",
     "releases.lead": "What changes in each version of MixBar and its browser extension: new features, improvements, fixes.",
@@ -273,8 +277,8 @@ function renderHeader(lang) {
     try { localStorage.setItem("mixbar-lang", select.value); } catch {}
     apply(select.value);
     loadAppRelease();
-loadReleases();
     loadReleases();
+    loadDownloadCounts();
   });
   document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 }
@@ -413,9 +417,53 @@ function loadReleases() {
     .catch(() => { list.textContent = I18N[document.documentElement.lang]?.["releases.empty"] ?? ""; });
 }
 
+// Compteurs publics de téléchargements, lus dans l'API publique de GitHub (sans jeton, lecture seule) :
+// DMG de toutes les versions de l'app, zips de l'extension par navigateur. Réponse gardée une heure
+// dans la session (l'API limite à 60 requêtes par heure et par visiteur). En cas d'échec : rien affiché.
+const RELEASES_API = "https://api.github.com/repos/Yil00/mixbar-site/releases?per_page=100";
+let downloadCounts = null;
+function loadDownloadCounts() {
+  const targets = ["appDownloadCount", "countChrome", "countFirefox"].map((id) => document.getElementById(id));
+  if (!targets.some(Boolean)) return;
+  const render = (counts) => {
+    const t = I18N[document.documentElement.lang] ?? I18N.fr;
+    const format = (n) => n === 1 ? t["count.download"]
+      : t["count.downloads"].replace("{n}", n.toLocaleString(document.documentElement.lang));
+    [counts.app, counts.chrome, counts.firefox].forEach((n, index) => {
+      const el = targets[index];
+      if (!el) return;
+      el.hidden = !(Number.isInteger(n) && n > 0);
+      if (!el.hidden) el.textContent = format(n);
+    });
+  };
+  if (downloadCounts) return render(downloadCounts);
+  try {
+    const cached = JSON.parse(sessionStorage.getItem("mixbar-counts") ?? "null");
+    if (cached && Date.now() - cached.at < 3600_000) { downloadCounts = cached; return render(cached); }
+  } catch {}
+  fetch(RELEASES_API, { headers: { Accept: "application/vnd.github+json" } })
+    .then((response) => (response.ok ? response.json() : Promise.reject()))
+    .then((releases) => {
+      const counts = { app: 0, chrome: 0, firefox: 0, at: Date.now() };
+      for (const release of releases) {
+        for (const asset of release.assets ?? []) {
+          const n = Number(asset.download_count) || 0;
+          if (/^v\d/.test(release.tag_name) && asset.name.endsWith(".dmg")) counts.app += n;
+          else if (release.tag_name.startsWith("extension-v") && asset.name.includes("chrome")) counts.chrome += n;
+          else if (release.tag_name.startsWith("extension-v") && asset.name.includes("firefox")) counts.firefox += n;
+        }
+      }
+      downloadCounts = counts;
+      try { sessionStorage.setItem("mixbar-counts", JSON.stringify(counts)); } catch {}
+      render(counts);
+    })
+    .catch(() => {});
+}
+
 initTheme();
 apply(language());
 initTabs();
 loadVersion();
 loadAppRelease();
 loadReleases();
+loadDownloadCounts();
