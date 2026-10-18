@@ -3,16 +3,33 @@
   "releases": [
     {
       "product": "app",
+      "version": "1.0.2",
+      "date": "2026-10-18",
+      "url": "https://github.com/Yil00/mixbar-site/releases/tag/v1.0.2",
+      "changes": [
+        {
+          "kind": "improved",
+          "fr": "La vérification des mises à jour lit sa fiche sur GitHub, avec le site en secours. GitHub en compte les lectures : un total anonyme, sans aucun identifiant (voir Confidentialité).",
+          "en": "The update check reads its file from GitHub, with the website as a fallback. GitHub counts how often it is read: an anonymous total, with no identifier (see Privacy)."
+        }
+      ]
+    },
+    {
+      "product": "app",
       "version": "1.0.1",
       "date": "2026-10-17",
       "url": "https://github.com/Yil00/mixbar-site/releases/tag/v1.0.1",
       "changes": [
-        { "kind": "security",
+        {
+          "kind": "security",
           "fr": "La mise à jour automatique n'ouvre plus qu'un téléchargement venant du site officiel de MixBar (en https).",
-          "en": "Automatic updates now only open a download from MixBar's official site (over https)." },
-        { "kind": "security",
+          "en": "Automatic updates now only open a download from MixBar's official site (over https)."
+        },
+        {
+          "kind": "security",
           "fr": "Un lien web qui demande de remettre toutes les apps à 100 % affiche d'abord une confirmation. Le bouton « Tout à 100 % » du widget reste immédiat.",
-          "en": "A web link asking to reset every app to 100% now asks for confirmation first. The widget's “All to 100%” button still works instantly." }
+          "en": "A web link asking to reset every app to 100% now asks for confirmation first. The widget's “All to 100%” button still works instantly."
+        }
       ]
     },
     {
@@ -21,21 +38,31 @@
       "date": "2026-10-17",
       "url": "https://github.com/Yil00/mixbar-site/releases/tag/v1.0.0",
       "changes": [
-        { "kind": "new",
+        {
+          "kind": "new",
           "fr": "Première version publique, notarisée par Apple.",
-          "en": "First public release, notarized by Apple." },
-        { "kind": "new",
+          "en": "First public release, notarized by Apple."
+        },
+        {
+          "kind": "new",
           "fr": "Volume de 0 à 200 % par app, muet, solo, et choix de la sortie audio de chaque app.",
-          "en": "Per-app volume from 0 to 200%, mute, solo, and a choice of audio output for each app." },
-        { "kind": "new",
+          "en": "Per-app volume from 0 to 200%, mute, solo, and a choice of audio output for each app."
+        },
+        {
+          "kind": "new",
           "fr": "Profils de mixage, actions Raccourcis et Siri, filtre de concentration et widget « Profils MixBar ».",
-          "en": "Mix profiles, Shortcuts and Siri actions, a Focus filter and the “MixBar Profiles” widget." },
-        { "kind": "new",
+          "en": "Mix profiles, Shortcuts and Siri actions, a Focus filter and the “MixBar Profiles” widget."
+        },
+        {
+          "kind": "new",
           "fr": "Égaliseur, balance, mono et mode nuit par app.",
-          "en": "Per-app equalizer, balance, mono and night mode." },
-        { "kind": "new",
+          "en": "Per-app equalizer, balance, mono and night mode."
+        },
+        {
+          "kind": "new",
           "fr": "Réglages synchronisés entre vos Mac par votre iCloud privé. Le son, lui, ne quitte jamais le Mac.",
-          "en": "Settings synced between your Macs through your private iCloud. The audio itself never leaves the Mac." }
+          "en": "Settings synced between your Macs through your private iCloud. The audio itself never leaves the Mac."
+        }
       ]
     },
     {
@@ -44,12 +71,16 @@
       "date": "2026-10-17",
       "url": "extension.html",
       "changes": [
-        { "kind": "new",
+        {
+          "kind": "new",
           "fr": "Volume, muet et lecture / pause de chaque onglet dans Chrome, Firefox et Safari, jusqu'à 200 %.",
-          "en": "Volume, mute and play / pause for each tab in Chrome, Firefox and Safari, up to 200%." },
-        { "kind": "fixed",
+          "en": "Volume, mute and play / pause for each tab in Chrome, Firefox and Safari, up to 200%."
+        },
+        {
+          "kind": "fixed",
           "fr": "Rechargement de l'extension sans perdre les onglets déjà ouverts.",
-          "en": "The extension reloads without losing tabs that are already open." }
+          "en": "The extension reloads without losing tabs that are already open."
+        }
       ]
     }
   ]
